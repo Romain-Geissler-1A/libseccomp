@@ -12,14 +12,10 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 #include <inttypes.h>
 
 #include "hash.h"
-
-static inline uint32_t getblock32(const uint32_t *p, int i)
-{
-	return p[i];
-}
 
 static inline uint32_t rotl32(uint32_t x, int8_t r)
 {
@@ -56,7 +52,7 @@ uint32_t hash(const void *key, size_t length)
 	/* body */
 	blocks = (const uint32_t *)(data + nblocks * 4);
 	for(i = -nblocks; i; i++) {
-		k1 = getblock32(blocks, i);
+		memcpy(&k1, &blocks[i], sizeof(uint32_t));
 
 		k1 *= c1;
 		k1 = rotl32(k1, 15);
